@@ -1,8 +1,8 @@
 import cv2
-import config as cfg
-import vision.camera as camera
+from fpv_vision import config as cfg
+from fpv_vision.vision.camera import Camera
 
-cam = camera.Camera()
+cam = Camera()
 
 try:
     cam.open()

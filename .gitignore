@@ -2,3 +2,10 @@
 .venv
 pycache
 .idea
+*.log
+logs/
+.env
+.env.*
+*.avi
+*.mp4
+*.mkv

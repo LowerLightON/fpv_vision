@@ -1,5 +1,5 @@
 import cv2
-import fpv_vision.config as cfg
+import config as cfg
 CAP = cfg.CAP
 
 class Camera:
@@ -15,7 +15,7 @@ class Camera:
             return
         cap = cv2.VideoCapture(self.device, cv2.CAP_V4L)
         if not cap.isOpened():
-            raise RuntimeError("Could not open camera")
+            raise RuntimeError("Camera is not opened. Call open() first.")
 
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
