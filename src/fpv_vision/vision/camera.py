@@ -13,7 +13,7 @@ class Camera:
     def open(self):
         if self._cap is not None:
             return
-        cap = cv2.VideoCapture(self.device, cv2.CAP_V4L)
+        cap = cv2.VideoCapture(self.device, cv2.CAP_V4L2)
         if not cap.isOpened():
             raise RuntimeError("Camera is not opened. Call open() first.")
 
