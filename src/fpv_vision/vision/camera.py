@@ -1,5 +1,5 @@
 import cv2
-import config as cfg
+from fpv_vision import config as cfg
 CAP = cfg.CAP
 
 class Camera:
