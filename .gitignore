@@ -1,6 +1,6 @@
 #Игнорируем venv
 .venv
-__pycache__
+__pycache__/
 .idea
 *.log
 logs/
@@ -9,4 +9,5 @@ logs/
 *.avi
 *.mp4
 *.mkv
-fpv_vision.egg-info
+*.pyc
+fpv_vision.egg-info/
