@@ -1,13 +1,26 @@
-#Игнорируем venv
-.venv
+# Virtual env
+.venv/
+
+# Python cache
 __pycache__/
-.idea
+*.pyc
+
+# Python build artifacts
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
 *.log
 logs/
+
+# Environment variables
 .env
 .env.*
+
+# Video files
 *.avi
 *.mp4
 *.mkv
-*.pyc
-fpv_vision.egg-info/

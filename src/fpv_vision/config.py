@@ -8,3 +8,8 @@ CAP = {
     "height": 720,
     "fps": 30,
 }
+#Размытие blur
+blur = {
+    "kernel_size": (5, 5),
+    "sigma": 5
+}

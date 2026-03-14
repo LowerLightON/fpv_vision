@@ -8,7 +8,7 @@ from fpv_vision import config as cfg
 def build_pipeline()->Pipeline:
     return Pipeline([
         Resize(cfg.CAP["width"], cfg.CAP["height"]),
-        Blur(),
+        Blur(cfg.blur["kernel_size"], cfg.blur["sigma"]),
         Threshold(),
         Morphology(),
     ])
