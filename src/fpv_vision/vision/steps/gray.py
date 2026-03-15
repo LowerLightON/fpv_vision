@@ -1,13 +1,12 @@
 from fpv_vision.vision.steps.base import BaseStep
 from typing import TypeVar
-import cv2
 T = TypeVar('T')
-class Resize(BaseStep[T]):
-    def __init__(self, width: int , height: int) -> None:
-        self.width = width
-        self.height = height
+import cv2
+class Gray(BaseStep[T]):
+    def __init__(self, color_code: int ) -> None:
+        self.color_code = color_code
     def apply(self, frame: T) -> T:
         if frame is None:
             raise ValueError('frame is None')
-        frame = cv2.resize(frame, (self.width, self.height))
+        frame = cv2.cvtColor(frame, self.color_code)
         return frame

@@ -3,7 +3,7 @@ from fpv_vision import config as cfg
 CAP = cfg.CAP
 
 class Camera:
-    def __init__(self, device=CAP["device"], width=CAP["width"], height=CAP["height"], fps=CAP["fps"]):
+    def __init__(self, device=CAP["DEVICE"], width=CAP["WIDTH"], height=CAP["HEIGHT"], fps=CAP["FPS"]):
         self.device = device
         self.width = width
         self.height = height
