@@ -12,5 +12,5 @@ def build_pipeline()->Pipeline:
         Grayscale(cfg.CVTCOLOR["COLOR"]),
         Blur(cfg.blur["KERNEL_SIZE"], cfg.blur["SIGMA"]),
         Threshold(cfg.threshold["THRESHOLD"],cfg.threshold["MAX_VALUE"] , cfg.threshold["TYPE"]),
-        Morphology(),
+        Morphology(cfg.MORPH_PARAMS["KERNEL_SIZE"], cfg.MORPH_PARAMS["OPERATION"])
     ])

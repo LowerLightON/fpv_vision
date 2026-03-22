@@ -5,7 +5,7 @@ WIN_INT_CAMERA = 'Integrated Camera'
 
 #Параметры камеры
 CAP = {
-    "DEVICE": "/dev/video0",
+    "DEVICE": "/dev/video2",
     "WIDTH": 1280,
     "HEIGHT": 720,
     "FPS": 30,
@@ -26,4 +26,10 @@ threshold = {
 #Конвертация в другие цвета
 CVTCOLOR = {
     "COLOR": cv2.COLOR_BGR2GRAY,
+}
+
+#Morphology
+MORPH_PARAMS = {
+    "KERNEL_SIZE": 3,
+    "OPERATION": cv2.MORPH_OPEN
 }
