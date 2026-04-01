@@ -4,6 +4,7 @@ from fpv_vision.vision.steps.threshold import Threshold
 from fpv_vision.vision.steps.morphology import Morphology
 from fpv_vision.vision.pipeline.pipeline import Pipeline
 from fpv_vision.vision.steps.gray import Grayscale
+from fpv_vision.vision.steps.contours import ContoursStep
 from fpv_vision import config as cfg
 
 def build_pipeline()->Pipeline:
@@ -12,5 +13,6 @@ def build_pipeline()->Pipeline:
         Grayscale(cfg.CVTCOLOR["COLOR"]),
         Blur(cfg.blur["KERNEL_SIZE"], cfg.blur["SIGMA"]),
         Threshold(cfg.threshold["THRESHOLD"],cfg.threshold["MAX_VALUE"] , cfg.threshold["TYPE"]),
-        Morphology(cfg.MORPH_PARAMS["KERNEL_SIZE"], cfg.MORPH_PARAMS["OPERATION"])
+        Morphology(cfg.MORPH_PARAMS["KERNEL_SIZE"], cfg.MORPH_PARAMS["OPERATION"]),
+        ContoursStep(cfg.FIND_CONTOUR_PARAMS["MIN_AREA"], cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"], cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
     ])

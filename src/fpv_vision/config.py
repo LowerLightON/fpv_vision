@@ -5,7 +5,7 @@ WIN_INT_CAMERA = 'Integrated Camera'
 
 #Параметры камеры
 CAP = {
-    "DEVICE": "/dev/video2",
+    "DEVICE": "/dev/video0",
     "WIDTH": 1280,
     "HEIGHT": 720,
     "FPS": 30,
@@ -32,4 +32,11 @@ CVTCOLOR = {
 MORPH_PARAMS = {
     "KERNEL_SIZE": 3,
     "OPERATION": cv2.MORPH_OPEN
+}
+
+#FindContours
+FIND_CONTOUR_PARAMS = {
+    "MIN_AREA": 100,
+    "RETRIEVAL": cv2.RETR_EXTERNAL,
+    "APPROXIMATION": cv2.CHAIN_APPROX_SIMPLE
 }
