@@ -1,10 +1,8 @@
 import cv2
 import numpy as np
 from fpv_vision.vision.steps.base import BaseStep
-from typing import TypeVar
-T = TypeVar("T")
 
-class ContoursStep(BaseStep[T]):
+class ContoursStep(BaseStep):
     def __init__(self, min_area : float, retrieval_mode: int, approximation_method: int) -> None:
         self.min_area = min_area
         self.retrieval_mode = retrieval_mode
@@ -16,7 +14,7 @@ class ContoursStep(BaseStep[T]):
             raise ValueError("ContoursStep expects grayscale/binary image")
         contours, _ = cv2.findContours(frame, self.retrieval_mode,self.approximation_method)
         if not contours:
-            return frame
+            return cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
         result = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
 
         biggest_contour = None
@@ -50,4 +48,16 @@ class ContoursStep(BaseStep[T]):
 
         print(f"Target: area={biggest_area}, center=({cx}, {cy})")
 
+        height, width = frame.shape[:2]
+
+        frame_center_x = width // 2
+        frame_center_y = height // 2
+
+        error_x = cx - frame_center_x
+        error_y = cy - frame_center_y
+
+        cv2.circle(result, (frame_center_x, frame_center_y), 5, (255, 0, 0), -1)
+        cv2.line(result, (frame_center_x, frame_center_y), (cx, cy), (255, 255, 0), 2)
+
+        print(f"error_x={error_x}, error_y={error_y}")
         return result
