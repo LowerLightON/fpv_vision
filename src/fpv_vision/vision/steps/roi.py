@@ -1,7 +1,4 @@
-
-from fpv_vision.vision.steps.base import BaseStep
-from vision.steps.base import Frame
-
+from fpv_vision.vision.steps.base import BaseStep, Frame
 
 class ROIStep(BaseStep):
     def apply(self, frame:Frame) -> Frame:

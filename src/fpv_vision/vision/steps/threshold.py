@@ -1,9 +1,6 @@
 from typing import TypeVar
-from fpv_vision.vision.steps.base import BaseStep
-
+from fpv_vision.vision.steps.base import BaseStep, Frame
 import cv2
-
-from vision.steps.base import Frame
 
 T = TypeVar('T')
 class Threshold(BaseStep[T]):

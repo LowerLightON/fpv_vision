@@ -18,3 +18,7 @@ class Frame:
         self.image = image
         self.target_center = None  # (x, y) | None
         self.error = None          # (x, y) | None
+        self.contour = None
+        self.prev_center = None
+        self.frame_center = None
+        self.bounding_box = None

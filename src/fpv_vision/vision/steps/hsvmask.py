@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
 
-from fpv_vision.vision.steps.base import BaseStep
-from vision.steps.base import Frame
-
+from fpv_vision.vision.steps.base import BaseStep, Frame
 
 class HSVMaskStep(BaseStep):
     def __init__(self, lower: tuple, upper: tuple)->None:
