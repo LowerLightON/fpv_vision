@@ -4,6 +4,9 @@ from fpv_vision.vision.pipeline.pipeline import Pipeline
 from fpv_vision.vision.steps.contours import ContoursStep
 from fpv_vision.vision.steps.hsvmask import HSVMaskStep
 from fpv_vision.vision.steps.roi import ROIStep
+from fpv_vision.vision.steps.targetcenter import TargetAndSmoothCenter
+from fpv_vision.vision.steps.Error import ErrorStep
+from fpv_vision.vision.steps.drawtarget import DrawTarget
 from fpv_vision import config as cfg
 
 
@@ -17,6 +20,9 @@ def build_pipeline()->Pipeline:
         ContoursStep(cfg.FIND_CONTOUR_PARAMS["MIN_AREA"],
                      cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
+        TargetAndSmoothCenter(),
+        ErrorStep(),
+        DrawTarget(),
     ])
 
 

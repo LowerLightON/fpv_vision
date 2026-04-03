@@ -32,6 +32,8 @@ class ContoursStep(BaseStep):
                 biggest_area = area
                 biggest_contour = contour
 
+        frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
+
         if biggest_contour is None:
             frame.prev_center = None
             frame.error = None

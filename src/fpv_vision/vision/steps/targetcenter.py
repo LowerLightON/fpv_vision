@@ -19,10 +19,13 @@ class TargetAndSmoothCenter(BaseStep[Frame]):
         frame.target_center = (cx, cy)
 
         if frame.prev_center is None:
-            frame.prev_center = (cx, cy)
+            smooth_center = (cx, cy)
         else:
             smooth_x = int(frame.prev_center[0] * 0.8 + cx * 0.2)
             smooth_y = int(frame.prev_center[1] * 0.8 + cy * 0.2)
-            frame.prev_center = (smooth_x, smooth_y)
+            smooth_center = (smooth_x, smooth_y)
+
+        frame.prev_center = smooth_center
+        frame.target_center = smooth_center
         return frame
 
