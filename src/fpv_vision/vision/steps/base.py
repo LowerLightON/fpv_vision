@@ -13,12 +13,22 @@ class BaseStep(Generic[T],ABC):
     @abstractmethod
     def apply(self, frame: T) -> T:
         pass
+
 class Frame:
     def __init__(self, image):
         self.image = image
-        self.target_center = None  # (x, y) | None
-        self.error = None          # (x, y) | None
-        self.contour = None
-        self.prev_center = None
-        self.frame_center = None
-        self.bounding_box = None
+        self.meta = {
+            "target_center" : None,
+            "error" : None,
+            "contour" : None,
+            "prev_center" : None,
+            "frame_center" : None,
+            "bounding_box" : None,
+        }
+
+
+    def set(self, key , value):
+        self.meta[key] = value
+
+    def get(self, key , default = None):
+        return self.meta.get(key, default)

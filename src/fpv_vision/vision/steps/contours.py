@@ -13,9 +13,11 @@ class ContoursStep(BaseStep):
             raise ValueError("ContoursStep expects grayscale/binary image")
         contours, _ = cv2.findContours(frame.image, self.retrieval_mode,self.approximation_method)
         if not contours:
-            frame.prev_center = None
-            frame.error = None
-            frame.target_center = None
+            frame.set("prev_center", None )
+            frame.set("error",   None)
+            frame.set("target_center",  None)
+            frame.set("contour",  None)
+            frame.set("bounding_box",  None)
             frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
             return frame
 
@@ -35,10 +37,12 @@ class ContoursStep(BaseStep):
         frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
 
         if biggest_contour is None:
-            frame.prev_center = None
-            frame.error = None
-            frame.target_center = None
+            frame.set("prev_center", None)
+            frame.set("error", None)
+            frame.set("target_center", None)
+            frame.set("contour", None)
+            frame.set("bounding_box", None)
             return frame
 
-        frame.contour = biggest_contour
+        frame.set("contour", biggest_contour)
         return frame

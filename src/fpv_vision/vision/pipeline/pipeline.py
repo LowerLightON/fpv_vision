@@ -10,7 +10,7 @@ class Pipeline(Generic[T]):
         return self.process(current)
     def process(self, frame: T) -> T:
         if frame is None:
-            return frame
+            raise ValueError("Frame is None")
         current = frame
         for step in self.steps:
             current = step(current)

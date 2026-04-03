@@ -27,10 +27,9 @@ class Camera:
         if self._cap is None:
             raise RuntimeError("Could not open camera")
         ret, img = self._cap.read()
-        frame = Frame(img)
         if not ret:
             raise RuntimeError("Could not read frame")
-        return frame
+        return Frame(img)
 
     def close(self):
         if self._cap is not None:

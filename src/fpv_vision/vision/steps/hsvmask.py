@@ -13,9 +13,7 @@ class HSVMaskStep(BaseStep):
         original = frame.image.copy()
         frame.image = cv2.cvtColor(frame.image, cv2.COLOR_BGR2HSV)
         frame.image = cv2.inRange(frame.image, self.lower, self.upper)
-        result = cv2.bitwise_and(original, original, mask=frame.image)
-        cv2.imshow("mask", frame.image)
-        cv2.imshow('result', result)
+        frame.set("bitwise_image", cv2.bitwise_and(original, original, mask=frame.image))
         return frame
 
 

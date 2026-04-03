@@ -5,14 +5,15 @@ from fpv_vision.vision.steps.contours import ContoursStep
 from fpv_vision.vision.steps.hsvmask import HSVMaskStep
 from fpv_vision.vision.steps.roi import ROIStep
 from fpv_vision.vision.steps.targetcenter import TargetAndSmoothCenter
-from fpv_vision.vision.steps.Error import ErrorStep
+from fpv_vision.vision.steps.error import ErrorStep
 from fpv_vision.vision.steps.drawtarget import DrawTarget
+from fpv_vision.vision.steps.time import TimeStep
 from fpv_vision import config as cfg
-
 
 
 def build_pipeline()->Pipeline:
     return Pipeline([
+        TimeStep(),
         Resize(cfg.CAP["WIDTH"], cfg.CAP["HEIGHT"]),
         ROIStep(),
         HSVMaskStep(cfg.HSV_MASK["LOWER"], cfg.HSV_MASK["UPPER"]),
@@ -24,9 +25,3 @@ def build_pipeline()->Pipeline:
         ErrorStep(),
         DrawTarget(),
     ])
-
-
-#Theshold
-#Grayscale(cfg.CVTCOLOR["COLOR"]),
-#Blur(cfg.blur["KERNEL_SIZE"], cfg.blur["SIGMA"]),
-#Threshold(cfg.threshold["THRESHOLD"],cfg.threshold["MAX_VALUE"] , cfg.threshold["TYPE"]),
