@@ -12,7 +12,7 @@ def main():
         while True:
             frame = cam.read()
             frame = pipeline(frame)
-            cv2.imshow(cfg.WIN_INT_CAMERA, frame)
+            cv2.imshow(cfg.WIN_INT_CAMERA, frame.image)
 
             if cv2.waitKey(1) == 27:
                 break

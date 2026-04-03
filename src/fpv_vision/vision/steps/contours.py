@@ -1,21 +1,25 @@
 import cv2
-import numpy as np
 from fpv_vision.vision.steps.base import BaseStep
+from vision.steps.base import Frame
+
 
 class ContoursStep(BaseStep):
     def __init__(self, min_area : float, retrieval_mode: int, approximation_method: int) -> None:
         self.min_area = min_area
         self.retrieval_mode = retrieval_mode
         self.approximation_method = approximation_method
-    def apply(self, frame : np.ndarray) -> np.ndarray:
+        self.prev_center = None
+    def apply(self, frame : Frame) ->Frame:
         if frame is None:
             raise ValueError('frame is None')
-        if len(frame.shape) != 2:
+        if len(frame.image.shape) != 2:
             raise ValueError("ContoursStep expects grayscale/binary image")
-        contours, _ = cv2.findContours(frame, self.retrieval_mode,self.approximation_method)
+        contours, _ = cv2.findContours(frame.image, self.retrieval_mode,self.approximation_method)
         if not contours:
-            return cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-        result = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+            self.prev_center = None
+            frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
+            return frame
+        frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
 
         biggest_contour = None
         biggest_area = 0.0
@@ -31,33 +35,40 @@ class ContoursStep(BaseStep):
                 biggest_contour = contour
 
         if biggest_contour is None:
-            return result
+            return frame
 
         x, y, w, h = cv2.boundingRect(biggest_contour)
 
-        M = cv2.moments(biggest_contour)
-        if M["m00"] != 0:
-            cx = int(M["m10"] / M["m00"])
-            cy = int(M["m01"] / M["m00"])
+        m = cv2.moments(biggest_contour)
+        if m["m00"] != 0:
+            cx = int(m["m10"] / m["m00"])
+            cy = int(m["m01"] / m["m00"])
         else:
             cx = x + w // 2
             cy = y + h // 2
 
-        cv2.rectangle(result, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.circle(result, (cx, cy), 5, (0, 0, 255), -1)
+        cv2.rectangle(frame.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
 
         print(f"Target: area={biggest_area}, center=({cx}, {cy})")
 
-        height, width = frame.shape[:2]
+        height, width = (frame.image.shape[:2])
 
         frame_center_x = width // 2
         frame_center_y = height // 2
+        if self.prev_center is None:
+            self.prev_center = (cx, cy)
+        else:
+            smooth_x = int(self.prev_center[0] * 0.8 + cx * 0.2)
+            smooth_y = int(self.prev_center[1] * 0.8 + cy * 0.2)
+            self.prev_center = (smooth_x, smooth_y)
+        draw_x, draw_y = self.prev_center
+        error_x = (draw_x - frame_center_x)
+        error_y = (draw_y - frame_center_y)
 
-        error_x = cx - frame_center_x
-        error_y = cy - frame_center_y
-
-        cv2.circle(result, (frame_center_x, frame_center_y), 5, (255, 0, 0), -1)
-        cv2.line(result, (frame_center_x, frame_center_y), (cx, cy), (255, 255, 0), 2)
+        cv2.circle(frame.image, (draw_x, draw_y), 5, (0, 0, 255), -1)
+        cv2.circle(frame.image, (frame_center_x, frame_center_y), 5, (255, 0, 0), -1)
+        cv2.line(frame.image, (frame_center_x, frame_center_y), (draw_x, draw_y), (255, 255, 0), 2)
 
         print(f"error_x={error_x}, error_y={error_y}")
-        return result
+        return frame

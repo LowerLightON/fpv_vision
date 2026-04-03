@@ -1,5 +1,6 @@
 import cv2
 from fpv_vision import config as cfg
+from fpv_vision.vision.steps.base import Frame
 CAP = cfg.CAP
 
 class Camera:
@@ -25,8 +26,9 @@ class Camera:
     def read(self):
         if self._cap is None:
             raise RuntimeError("Could not open camera")
-        ok, frame = self._cap.read()
-        if not ok:
+        ret, img = self._cap.read()
+        frame = Frame(img)
+        if not ret:
             raise RuntimeError("Could not read frame")
         return frame
 

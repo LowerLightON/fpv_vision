@@ -13,5 +13,8 @@ class BaseStep(Generic[T],ABC):
     @abstractmethod
     def apply(self, frame: T) -> T:
         pass
-
-
+class Frame:
+    def __init__(self, image):
+        self.image = image
+        self.target_center = None  # (x, y) | None
+        self.error = None          # (x, y) | None
