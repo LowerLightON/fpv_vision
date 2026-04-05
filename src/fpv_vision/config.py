@@ -46,3 +46,6 @@ HSV_MASK = {
     "LOWER": (0, 120, 70),
     "UPPER": (15, 250, 250)
 }
+
+#Velocity
+ALPHA = 0.8

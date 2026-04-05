@@ -9,7 +9,5 @@ class Resize(BaseStep[T]):
         self.width = width
         self.height = height
     def apply(self, frame: Frame) -> Frame:
-        if frame.image is None:
-            raise ValueError('frame is None')
         frame.image = cv2.resize(frame.image, (self.width, self.height))
         return frame

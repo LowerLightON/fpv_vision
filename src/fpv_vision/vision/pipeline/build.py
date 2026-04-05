@@ -6,8 +6,9 @@ from fpv_vision.vision.steps.hsvmask import HSVMaskStep
 from fpv_vision.vision.steps.roi import ROIStep
 from fpv_vision.vision.steps.targetcenter import TargetAndSmoothCenter
 from fpv_vision.vision.steps.error import ErrorStep
-from fpv_vision.vision.steps.drawtarget import DrawTarget
+from fpv_vision.vision.steps.drawoverlay import DrawOverlayStep
 from fpv_vision.vision.steps.time import TimeStep
+from fpv_vision.vision.steps.velocity import VelocityStep
 from fpv_vision import config as cfg
 
 
@@ -22,6 +23,7 @@ def build_pipeline()->Pipeline:
                      cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
         TargetAndSmoothCenter(),
+        VelocityStep(cfg.ALPHA),
         ErrorStep(),
-        DrawTarget(),
+        DrawOverlayStep(),
     ])

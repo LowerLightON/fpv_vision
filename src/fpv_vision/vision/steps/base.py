@@ -18,12 +18,14 @@ class Frame:
     def __init__(self, image):
         self.image = image
         self.meta = {
-            "target_center" : None,
+            "raw_target_center" : None,
+            "smoothed_target_center": None,
             "error" : None,
             "contour" : None,
-            "prev_center" : None,
             "frame_center" : None,
             "bounding_box" : None,
+            "timestamp" : None,
+            "velocity" : None,
         }
 
 

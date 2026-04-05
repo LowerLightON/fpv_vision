@@ -2,9 +2,6 @@ from fpv_vision.vision.steps.base import BaseStep, Frame
 
 class ROIStep(BaseStep):
     def apply(self, frame:Frame) -> Frame:
-        if frame.image is None:
-            raise ValueError("Frame is None")
-
         height, width = frame.image.shape[:2]
         x1 = width // 4
         x2 = width * 3 // 4

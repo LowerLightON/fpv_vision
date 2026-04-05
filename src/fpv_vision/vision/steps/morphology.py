@@ -10,8 +10,6 @@ class Morphology(BaseStep[T]):
         self.kernel_size = kernel_size
         self.operation = operation
     def apply(self, frame: Frame) -> Frame:
-        if frame.image is None:
-            raise ValueError('frame is None')
         kernel = np.ones((self.kernel_size, self.kernel_size), np.uint8)
         frame.image= cv2.morphologyEx(frame.image, self.operation, kernel)
         return frame

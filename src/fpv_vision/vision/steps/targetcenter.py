@@ -2,15 +2,14 @@ from fpv_vision.vision.steps.base import BaseStep, Frame
 import cv2
 
 class TargetAndSmoothCenter(BaseStep[Frame]):
+    def __init__(self) -> None:
+        self.prev_smoothed_target_center = None
     def apply(self, frame: Frame) -> Frame:
-        if frame is None:
-            raise ValueError("Frame is None")
-
         contour = frame.get("contour")
         if contour is None:
-            frame.set("target_center",  None)
+            frame.set("raw_target_center",  None)
             frame.set("bounding_box", None)
-            frame.set("prev_center", None)
+            frame.set("smoothed_target_center", None)
             return frame
 
         frame.set("bounding_box" , cv2.boundingRect(frame.get("contour")))
@@ -23,16 +22,17 @@ class TargetAndSmoothCenter(BaseStep[Frame]):
             cx = x + w // 2
             cy = y + h // 2
 
-        frame.set("target_center", (cx, cy))
+        frame.set("raw_target_center", (cx, cy))
 
-        if frame.get("prev_center") is None:
+        if self.prev_smoothed_target_center is None:
             smooth_center = (cx, cy)
         else:
-            smooth_x = int(frame.get("prev_center")[0] * 0.8 + cx * 0.2)
-            smooth_y = int(frame.get("prev_center")[1] * 0.8 + cy * 0.2)
+            smooth_x = int(self.prev_smoothed_target_center[0] * 0.8 + cx * 0.2)
+            smooth_y = int(self.prev_smoothed_target_center[1] * 0.8 + cy * 0.2)
             smooth_center = (smooth_x, smooth_y)
 
-        frame.set("prev_center", smooth_center)
-        frame.set("target_center", smooth_center)
+        frame.set("smoothed_target_center", smooth_center)
+
+        self.prev_smoothed_target_center = smooth_center
         return frame
 
