@@ -18,6 +18,7 @@ class Frame:
     def __init__(self, image):
         self.image = image
         self.meta = {
+            "angle" : None,
             "raw_target_center" : None,
             "smoothed_target_center": None,
             "error" : None,

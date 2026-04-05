@@ -1,4 +1,5 @@
 from fpv_vision.vision.steps.base import BaseStep,Frame
+import math
 
 class VelocityStep(BaseStep):
     def __init__(self, alpha: float) -> None:
@@ -10,6 +11,7 @@ class VelocityStep(BaseStep):
     def apply(self, frame: Frame) -> Frame:
         current_center = frame.get("raw_target_center")
         current_timestamp = frame.get("timestamp")
+
 
         if current_center is None or current_timestamp is None:
             frame.set("velocity", None)
@@ -43,6 +45,13 @@ class VelocityStep(BaseStep):
             vy_s = self.prev_velocity[1] * self.alpha + vy * (1 - self.alpha)
             smooth_velocity = (vx_s, vy_s)
         frame.set("velocity", smooth_velocity )
+
+        vx_s, vy_s = smooth_velocity
+        if frame.get("velocity") is None:
+            frame.set("angle",None)
+        else:
+            angle = math.atan2(vy_s, vx_s)
+            frame.set("angle",angle)
 
         self.prev_timestamp = current_timestamp
         self.prev_center = current_center

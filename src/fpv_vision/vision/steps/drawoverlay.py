@@ -17,13 +17,16 @@ class DrawOverlayStep(BaseStep):
             cv2.rectangle(frame.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         velocity = frame.get("velocity")
-        vx, vy = velocity()
         if velocity is not None:
+            vx, vy = velocity
+            text = f"vx = {vx:.2f}, vy = {vy:.2f}  angle = {frame.get("angle"):.2f}"
+            if frame.get("angle") is not None:
+                text += f", angle = {frame.get("angle"):.2f}"
             cv2.putText(frame.image,
-                        f"vx = {vx:.2f}, vy = {vy:.2f}",
+                        text,
                         (10,30),
                         cv2.FONT_HERSHEY_SIMPLEX,
-                        0.7,
+                        0.5,
                         (0, 255, 0),
                         2)
         return frame
