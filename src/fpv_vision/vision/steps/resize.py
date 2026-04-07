@@ -1,10 +1,7 @@
 from fpv_vision.vision.steps.base import BaseStep, Frame
-from typing import TypeVar
 import cv2
 
-
-T = TypeVar('T')
-class Resize(BaseStep[T]):
+class Resize(BaseStep[Frame]):
     def __init__(self, width: int , height: int) -> None:
         self.width = width
         self.height = height

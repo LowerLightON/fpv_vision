@@ -3,25 +3,30 @@ import cv2
 
 class DrawOverlayStep(BaseStep):
     def apply(self, frame: Frame) -> Frame:
-        if frame.get("smoothed_target_center") is not None:
-            cv2.circle(frame.image, frame.get("smoothed_target_center"), 5, (0, 0, 255), -1)
+        obj = frame.primary_object
+        if obj is None:
+            if frame.frame_center is not None:
+                cv2.circle(frame.image, frame.frame_center, 5, (255, 0, 0), -1)
+            return frame
 
-        if frame.get("frame_center") is not None:
-            cv2.circle(frame.image, frame.get("frame_center"), 5, (255, 0, 0), -1)
+        if obj.smoothed_center is not None:
+            cv2.circle(frame.image, obj.smoothed_center, 5, (0, 0, 255), -1)
 
-        if frame.get("frame_center") is not None and frame.get("smoothed_target_center") is not None:
-            cv2.line(frame.image, frame.get("frame_center"), frame.get("smoothed_target_center"), (255, 255, 0), 2)
+        if frame.frame_center is not None:
+            cv2.circle(frame.image, frame.frame_center, 5, (255, 0, 0), -1)
 
-        if frame.get("bounding_box") is not None:
-            x, y, w, h = frame.get("bounding_box")
+        if frame.frame_center is not None and obj.smoothed_center is not None:
+            cv2.line(frame.image, frame.frame_center, obj.smoothed_center, (255, 255, 0), 2)
+
+        if obj.bounding_box is not None:
+            x, y, w, h = obj.bounding_box
             cv2.rectangle(frame.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        velocity = frame.get("velocity")
-        if velocity is not None:
-            vx, vy = velocity
-            text = f"vx = {vx:.2f}, vy = {vy:.2f}  angle = {frame.get("angle"):.2f}"
-            if frame.get("angle") is not None:
-                text += f", angle = {frame.get("angle"):.2f}"
+        if obj.velocity is not None:
+            vx, vy = obj.velocity
+            text = f"vx = {vx:.2f}, vy = {vy:.2f}"
+            if obj.angle is not None:
+                text += f", angle = {obj.angle:.2f}"
             cv2.putText(frame.image,
                         text,
                         (10,30),
@@ -29,4 +34,6 @@ class DrawOverlayStep(BaseStep):
                         0.5,
                         (0, 255, 0),
                         2)
+        if obj.predicted_center is not None:
+            cv2.circle(frame.image, obj.predicted_center, 5, (0, 255, 255), -1)
         return frame

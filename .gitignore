@@ -24,3 +24,5 @@ logs/
 *.avi
 *.mp4
 *.mkv
+
+src/fpv_vision/tranning.py

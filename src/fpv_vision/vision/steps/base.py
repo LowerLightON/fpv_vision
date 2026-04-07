@@ -1,5 +1,9 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Any
+from fpv_vision.vision.steps.detectedobject import DetectedObject
+
 
 T = TypeVar('T')
 
@@ -17,21 +21,26 @@ class BaseStep(Generic[T],ABC):
 class Frame:
     def __init__(self, image):
         self.image = image
-        self.meta = {
-            "angle" : None,
-            "raw_target_center" : None,
-            "smoothed_target_center": None,
-            "error" : None,
-            "contour" : None,
-            "frame_center" : None,
-            "bounding_box" : None,
-            "timestamp" : None,
-            "velocity" : None,
-        }
 
+        self.timestamp: float | None = None
+        self.debug_data: dict[str, Any]  = {}
 
-    def set(self, key , value):
-        self.meta[key] = value
+        self.objects: list[DetectedObject] = []
+        self.primary_object: DetectedObject | None = None
 
-    def get(self, key , default = None):
-        return self.meta.get(key, default)
+        self.frame_center: tuple[int, int] | None = None
+        self.error: tuple[int, int] | None = None
+
+    def set_debug(self, key: str , value: object) -> None:
+        self.debug_data[key] = value
+
+    def get_debug(self, key: str , default = None):
+        return self.debug_data.get(key, default)
+
+    @property
+    def f_x(self) -> int:
+        return self.frame_center[0] if self.frame_center else None
+
+    @property
+    def f_y(self) -> int:
+        return self.frame_center[1] if self.frame_center else None

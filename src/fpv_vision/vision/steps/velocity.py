@@ -1,7 +1,7 @@
 from fpv_vision.vision.steps.base import BaseStep,Frame
 import math
 
-class VelocityStep(BaseStep):
+class VelocityStep(BaseStep[Frame]):
     def __init__(self, alpha: float) -> None:
         self.prev_timestamp = None
         self.prev_center = None
@@ -9,18 +9,22 @@ class VelocityStep(BaseStep):
         self.alpha = alpha
 
     def apply(self, frame: Frame) -> Frame:
-        current_center = frame.get("raw_target_center")
-        current_timestamp = frame.get("timestamp")
-
+        if frame.primary_object is None:
+            self.prev_timestamp = None
+            self.prev_center = None
+            self.prev_velocity = None
+            return frame
+        current_center = frame.primary_object.center
+        current_timestamp = frame.timestamp
 
         if current_center is None or current_timestamp is None:
-            frame.set("velocity", None)
+            frame.primary_object.velocity = None
             self.prev_center = None
             self.prev_timestamp = None
             self.prev_velocity = None
             return frame
         if self.prev_timestamp is None or self.prev_center is None:
-            frame.set("velocity", None)
+            frame.primary_object.velocity = None
             self.prev_timestamp = current_timestamp
             self.prev_center = current_center
             return frame
@@ -28,7 +32,7 @@ class VelocityStep(BaseStep):
         dt = current_timestamp - self.prev_timestamp
 
         if dt <= 0:
-            frame.set("velocity", None)
+            frame.primary_object.velocity = None
             self.prev_timestamp = current_timestamp
             self.prev_center = current_center
             return frame
@@ -44,14 +48,14 @@ class VelocityStep(BaseStep):
             vx_s = self.prev_velocity[0] * self.alpha + vx * (1 - self.alpha)
             vy_s = self.prev_velocity[1] * self.alpha + vy * (1 - self.alpha)
             smooth_velocity = (vx_s, vy_s)
-        frame.set("velocity", smooth_velocity )
+        frame.primary_object.velocity = smooth_velocity
 
         vx_s, vy_s = smooth_velocity
-        if frame.get("velocity") is None:
-            frame.set("angle",None)
+        if frame.primary_object.velocity  is None:
+            frame.primary_object.angle = None
         else:
             angle = math.atan2(vy_s, vx_s)
-            frame.set("angle",angle)
+            frame.primary_object.angle = angle
 
         self.prev_timestamp = current_timestamp
         self.prev_center = current_center

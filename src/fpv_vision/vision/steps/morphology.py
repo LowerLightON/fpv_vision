@@ -5,7 +5,7 @@ from typing import TypeVar
 
 T = TypeVar('T')
 
-class Morphology(BaseStep[T]):
+class Morphology(BaseStep[Frame]):
     def __init__(self, kernel_size: int, operation: int):
         self.kernel_size = kernel_size
         self.operation = operation

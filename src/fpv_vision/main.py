@@ -14,7 +14,7 @@ def main():
             frame = pipeline(frame)
             cv2.imshow(cfg.WIN_INT_CAMERA, frame.image)
             cv2.imshow("mask and draw", frame.image)
-            cv2.imshow("bitwise image", frame.get("bitwise_image"))
+            cv2.imshow("bitwise image", frame.get_debug("bitwise_image"))
 
             if cv2.waitKey(1) == 27:
                 break
