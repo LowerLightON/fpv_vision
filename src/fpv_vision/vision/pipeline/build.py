@@ -12,6 +12,7 @@ from fpv_vision.vision.steps.velocity import VelocityStep
 from fpv_vision.vision.steps.prediction import PredictionStep
 from fpv_vision.vision.steps.objectinfo import ObjectInfoStep
 from fpv_vision.vision.steps.selectprimaryobject import SelectPrimaryObject
+from fpv_vision.vision.steps.objecttracking import ObjectTracking
 from fpv_vision import config as cfg
 
 
@@ -26,6 +27,7 @@ def build_pipeline()->Pipeline:
                      cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
         ObjectInfoStep(),
+        ObjectTracking(cfg.MAX_DISTANCE),
         SelectPrimaryObject(),
         SmoothCenter(cfg.ALPHA_SMOOTH),
         VelocityStep(cfg.ALPHA_VELOCITY),

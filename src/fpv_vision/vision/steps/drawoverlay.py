@@ -22,18 +22,22 @@ class DrawOverlayStep(BaseStep):
             x, y, w, h = obj.bounding_box
             cv2.rectangle(frame.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
+        if obj.predicted_center is not None:
+            cv2.circle(frame.image, obj.predicted_center, 5, (0, 255, 255), -1)
+
         if obj.velocity is not None:
             vx, vy = obj.velocity
             text = f"vx = {vx:.2f}, vy = {vy:.2f}"
             if obj.angle is not None:
                 text += f", angle = {obj.angle:.2f}"
+                if obj.obj_id is not None:
+                    text += f", obj_id = {obj.obj_id}"
             cv2.putText(frame.image,
                         text,
-                        (10,30),
+                        (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         0.5,
                         (0, 255, 0),
                         2)
-        if obj.predicted_center is not None:
-            cv2.circle(frame.image, obj.predicted_center, 5, (0, 255, 255), -1)
+
         return frame

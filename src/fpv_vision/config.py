@@ -55,3 +55,6 @@ PREDICTED_TIME = 0.1
 
 #Low-pass-filter(Smooth center)
 ALPHA_SMOOTH = 0.8
+
+#TrackingObject
+MAX_DISTANCE = 30
