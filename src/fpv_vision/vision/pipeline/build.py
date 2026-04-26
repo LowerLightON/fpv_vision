@@ -27,7 +27,7 @@ def build_pipeline()->Pipeline:
                      cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
         ObjectInfoStep(),
-        ObjectTracking(cfg.MAX_DISTANCE),
+        ObjectTracking(cfg.MAX_DISTANCE, cfg.MAX_MISSED_FRAMES),
         SelectPrimaryObject(),
         SmoothCenter(cfg.ALPHA_SMOOTH),
         VelocityStep(cfg.ALPHA_VELOCITY),

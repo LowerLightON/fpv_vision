@@ -43,8 +43,8 @@ FIND_CONTOUR_PARAMS = {
 
 #HSV Mask
 HSV_MASK = {
-    "LOWER": (0, 120, 70),
-    "UPPER": (15, 250, 250)
+    "LOWER": (30, 40, 30),
+    "UPPER": (95, 255, 255)
 }
 
 #Velocity
@@ -58,3 +58,4 @@ ALPHA_SMOOTH = 0.8
 
 #TrackingObject
 MAX_DISTANCE = 30
+MAX_MISSED_FRAMES = 5
