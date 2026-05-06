@@ -4,6 +4,7 @@ class SmoothCenter(BaseStep[Frame]):
     def __init__(self, alpha: float) -> None:
         self.alpha = alpha
         self.prev_smoothed_target_center = None
+
     def apply(self, frame: Frame) -> Frame:
         obj = frame.primary_object
 
