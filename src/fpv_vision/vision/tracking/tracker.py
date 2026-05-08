@@ -1,12 +1,13 @@
 from fpv_vision.vision.utils.geometry import distance as calculate_distance
 from fpv_vision.vision.tracking.tracked_object import TrackedObject
 class Tracker:
-	def __init__(self, max_distance: int, max_missed_frames: int):
+	def __init__(self, max_distance: int, max_missed_frames: int, timestamp: float):
 		self.objects = []
 		self.next_id = 1
 
 		self.max_distance = max_distance
 		self.max_missed_frames = max_missed_frames
+		self.last_timestamp = timestamp
 
 	def update(self, detections, timestamp):
 		used_objects = set()

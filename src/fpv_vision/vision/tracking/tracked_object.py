@@ -1,5 +1,6 @@
+from  fpv_vision.vision.steps.detectedobject import DetectedObject
 class TrackedObject:
-    def __init__(self, obj_id: int, detection: object, timestamp: float):
+    def __init__(self, obj_id: int, detection: DetectedObject, timestamp: float):
         self._obj_id = obj_id
         self.current_detection = detection
         self.previous_center = None
@@ -28,6 +29,23 @@ class TrackedObject:
         dt = timestamp - previous_timestamp
         self.last_timestamp = timestamp
         if dt <= 0:
+            return
+        if self.previous_center is not None:
+            dx = self.current_center[0] - self.previous_center[0]
+            dy = self.current_center[1] - self.previous_center[1]
+            vx = dx / dt
+            vy = dy / dt
+
+            self.velocity = (vx, vy)
+    def predict(self, dt: float):
+        if self.velocity is None:
+            self.predicted_center = self.current_center
+            return self.predicted_center
+
+        predict_x = self.current_center[0] + self.velocity[0] * dt
+        predict_y = self.current_center[1] + self.velocity[1] * dt
+        self.predicted_center = (predict_x, predict_y)
+        return self.predicted_center
 
 
     def mark_missed(self):
