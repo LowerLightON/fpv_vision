@@ -56,5 +56,5 @@ class Tracker:
 				active_objects.append(obj)
 		self.objects = active_objects
 
-
+		return self.objects
 

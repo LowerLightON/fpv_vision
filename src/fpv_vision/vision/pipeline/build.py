@@ -1,18 +1,18 @@
-from fpv_vision.vision.steps.resize import Resize
-from fpv_vision.vision.steps.morphology import Morphology
+from vision.steps.preprocessing.resize import Resize
+from vision.steps.preprocessing.morphology import Morphology
 from fpv_vision.vision.pipeline.pipeline import Pipeline
-from fpv_vision.vision.steps.contours import ContoursStep
-from fpv_vision.vision.steps.hsvmask import HSVMaskStep
-from fpv_vision.vision.steps.roi import ROIStep
-from fpv_vision.vision.steps.smoothcenter import SmoothCenter
-from fpv_vision.vision.steps.error import ErrorStep
-from fpv_vision.vision.steps.drawoverlay import DrawOverlayStep
-from fpv_vision.vision.steps.time import TimeStep
-from fpv_vision.vision.steps.velocity import VelocityStep
-from fpv_vision.vision.steps.prediction import PredictionStep
-from fpv_vision.vision.steps.objectinfo import ObjectInfoStep
-from fpv_vision.vision.steps.selectprimaryobject import SelectPrimaryObject
-from fpv_vision.vision.steps.objecttracking import ObjectTracking
+from vision.steps.detection.contours import ContoursStep
+from vision.steps.preprocessing.hsvmask import HSVMaskStep
+from vision.steps.preprocessing.roi import ROIStep
+from vision.steps.tracking.smoothcenter import SmoothCenter
+from vision.steps.guidance.error import ErrorStep
+from vision.steps.visualization.drawoverlay import DrawOverlayStep
+from vision.utils.time import TimeStep
+from vision.steps.legacy.velocity import VelocityStep
+from vision.steps.legacy.prediction import PredictionStep
+from vision.steps.detection.object_extraction import ObjectInfoStep
+from vision.steps.selection.selectprimaryobject import SelectPrimaryObject
+from vision.steps.tracking.objecttracking import ObjectTracking
 from fpv_vision import config as cfg
 
 

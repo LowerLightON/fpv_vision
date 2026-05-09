@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Any
-from fpv_vision.vision.steps.detectedobject import DetectedObject
+from vision.entities.detectedobject import DetectedObject
 
 
 T = TypeVar('T')
