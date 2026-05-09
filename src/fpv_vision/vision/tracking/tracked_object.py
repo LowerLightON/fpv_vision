@@ -1,10 +1,11 @@
 from  fpv_vision.vision.steps.detectedobject import DetectedObject
 class TrackedObject:
-    def __init__(self, obj_id: int, detection: DetectedObject, timestamp: float):
+    def __init__(self, obj_id: int, detection: DetectedObject, timestamp: float, min_dt: float):
         self._obj_id = obj_id
         self.current_detection = detection
         self.previous_center = None
         self.current_center = detection.center
+        self.min_dt = min_dt
 
         self.velocity = None
         self.predicted_center = None
@@ -28,8 +29,12 @@ class TrackedObject:
         previous_timestamp = self.last_timestamp
         dt = timestamp - previous_timestamp
         self.last_timestamp = timestamp
+
         if dt <= 0:
             return
+        if dt < self.min_dt:
+            return
+
         if self.previous_center is not None:
             dx = self.current_center[0] - self.previous_center[0]
             dy = self.current_center[1] - self.previous_center[1]
@@ -38,7 +43,7 @@ class TrackedObject:
 
             self.velocity = (vx, vy)
     def predict(self, dt: float):
-        if self.velocity is None:
+        if dt is None or self.velocity is None:
             self.predicted_center = self.current_center
             return self.predicted_center
 
