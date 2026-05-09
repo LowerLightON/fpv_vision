@@ -1,4 +1,5 @@
-from fpv_vision.vision.steps.base import BaseStep,Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 import math
 
 class VelocityStep(BaseStep[Frame]):

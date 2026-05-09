@@ -1,4 +1,5 @@
-from fpv_vision.vision.steps.base import BaseStep, Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 import cv2
 
 class Blur(BaseStep[Frame]):

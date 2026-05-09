@@ -1,4 +1,5 @@
-from fpv_vision.vision.steps.base import BaseStep, Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 import cv2
 
 class DrawOverlayStep(BaseStep):
@@ -9,17 +10,18 @@ class DrawOverlayStep(BaseStep):
                 cv2.circle(frame.image, frame.frame_center, 5, (255, 0, 0), -1)
             return frame
 
-        if obj.smoothed_center is not None:
-            cv2.circle(frame.image, obj.smoothed_center, 5, (0, 0, 255), -1)
+        if obj.current_center is not None:
+            cv2.circle(frame.image, obj.current_center, 5, (0, 0, 255), -1)
 
         if frame.frame_center is not None:
             cv2.circle(frame.image, frame.frame_center, 5, (255, 0, 0), -1)
 
-        if frame.frame_center is not None and obj.smoothed_center is not None:
-            cv2.line(frame.image, frame.frame_center, obj.smoothed_center, (255, 255, 0), 2)
+        if frame.frame_center is not None and obj.current_center is not None:
+            cv2.line(frame.image, frame.frame_center, obj.current_center, (255, 255, 0), 2)
 
-        if obj.bounding_box is not None:
-            x, y, w, h = obj.bounding_box
+        bbox = obj.current_detection.bounding_box
+        if bbox is not None:
+            x, y, w, h = bbox
             cv2.rectangle(frame.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
             if obj.obj_id is not None:

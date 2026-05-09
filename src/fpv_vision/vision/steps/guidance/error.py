@@ -1,4 +1,5 @@
-from fpv_vision.vision.steps.base import BaseStep, Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 
 class ErrorStep(BaseStep):
     def apply(self, frame: Frame) -> Frame:
@@ -11,7 +12,7 @@ class ErrorStep(BaseStep):
         if frame.frame_center is None:
             frame.error = None
             return frame
-        target_x, target_y = frame.primary_object.center
+        target_x, target_y = frame.primary_object.current_center
         error_x = target_x -  frame.f_x
         error_y = target_y -  frame.f_y
         frame.error = (error_x, error_y)

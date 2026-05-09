@@ -1,5 +1,6 @@
 import cv2
-from fpv_vision.vision.steps.base import BaseStep, Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 
 class ContoursStep(BaseStep[Frame]):
     def __init__(self, min_area : float, retrieval_mode: int, approximation_method: int) -> None:

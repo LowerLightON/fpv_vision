@@ -1,5 +1,6 @@
 from typing import TypeVar
-from fpv_vision.vision.steps.base import BaseStep, Frame
+from fpv_vision.vision.steps.base import BaseStep
+from fpv_vision.vision.entities.frame import Frame
 import cv2
 
 T = TypeVar('T')

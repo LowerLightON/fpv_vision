@@ -1,6 +1,6 @@
 import cv2
 from fpv_vision import config as cfg
-from fpv_vision.vision.steps.base import Frame
+from fpv_vision.vision.entities.frame import Frame
 CAP = cfg.CAP
 
 class Camera:
