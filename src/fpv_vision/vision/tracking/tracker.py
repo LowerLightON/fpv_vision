@@ -1,60 +1,57 @@
-from fpv_vision.vision.utils.geometry import distance as calculate_distance
+from fpv_vision.vision.entities.detected_object import DetectedObject
 from fpv_vision.vision.tracking.tracked_object import TrackedObject
+from fpv_vision.vision.utils.geometry import distance as calc_distance
+
 class Tracker:
-	def __init__(self, max_distance: int, max_missed_frames: int, min_dt: int):
-		self.objects = []
-		self.next_id = 1
+	def __init__(self, max_distance: float, max_missed_frames: float, min_dt: float) -> None:
+		self.tracks: list[TrackedObject] = []
 
 		self.max_distance = max_distance
 		self.max_missed_frames = max_missed_frames
+		self.next_id = 1
 		self.min_dt = min_dt
-		self.last_timestamp = None
 
-	def update(self, detections, timestamp):
-		used_objects = set()
+	def update (self, detections: list[DetectedObject], timestamp: float) -> list[TrackedObject]:
+		matched_track_ids = set()
+		matched_detection_indices = set()
+		current_tracks: list[TrackedObject] = []
 
-		previous_timestamp = self.last_timestamp
-		if previous_timestamp is None:
-			dt = None
-		else:
-			dt = timestamp - previous_timestamp
-		self.last_timestamp = timestamp
-
-		for obj in self.objects:
-			obj.predict(dt)
-
-		for detection in detections:
-			best_object = None
+		for track in self.tracks:
 			best_distance = self.max_distance
+			best_detection = None
+			best_detection_index = None
 
-			for obj in self.objects:
-				if obj.obj_id in used_objects:
+			for detection_index, detection in enumerate(detections):
+				if detection_index in matched_detection_indices:
 					continue
-
-				distance = calculate_distance(detection.center, obj.predicted_center)
-
+				distance = calc_distance(detection.center, track.current_center)
 				if distance < best_distance:
-					best_object = obj
 					best_distance = distance
+					best_detection = detection
+					best_detection_index = detection_index
 
-			if best_object is not None:
-				best_object.update(detection, timestamp)
-				used_objects.add(best_object.obj_id)
+			if best_detection is not None and best_detection_index is not None:
+				track.update(best_detection, timestamp)
+				matched_track_ids.add(track.obj_id)
+				matched_detection_indices.add(best_detection_index)
+				current_tracks.append(track)
 			else:
-				obj = TrackedObject(self.next_id, detection , timestamp, self.min_dt)
-				self.objects.append(obj)
-				used_objects.add(obj.obj_id)
-				self.next_id += 1
+				track.mark_missed()
 
-		for obj in self.objects:
-			if obj.obj_id not in used_objects:
-				obj.mark_missed()
+		for detection_index, detection in enumerate(detections):
+			if detection_index in matched_detection_indices:
+				continue
+			new_track = TrackedObject(self.next_id, detection, timestamp, self.min_dt)
+			self.next_id += 1
+			current_tracks.append(new_track)
+			self.tracks.append(new_track)
 
-		active_objects = []
-		for obj in self.objects:
-			if not obj.is_lost(self.max_missed_frames):
-				active_objects.append(obj)
-		self.objects = active_objects
+		alive_tracks: list[TrackedObject] = []
 
-		return self.objects
+		for track in self.tracks:
+			if not track.should_remove(self.max_missed_frames):
+				alive_tracks.append(track)
+
+		self.tracks = alive_tracks
+		return current_tracks
 

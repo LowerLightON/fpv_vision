@@ -56,5 +56,5 @@ class TrackedObject:
     def mark_missed(self):
         self._missed_frames += 1
 
-    def is_lost(self,  max_missed_frames) -> bool:
+    def should_remove(self,  max_missed_frames) -> bool:
         return self.missed_frames > max_missed_frames
