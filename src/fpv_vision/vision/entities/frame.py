@@ -1,4 +1,4 @@
-from vision.entities.detected_object import DetectedObject
+from fpv_vision.vision.entities.detected_object import DetectedObject
 from typing import Any
 
 class Frame:

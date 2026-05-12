@@ -26,3 +26,4 @@ logs/
 *.mkv
 
 src/fpv_vision/tranning.py
+.venv_old
