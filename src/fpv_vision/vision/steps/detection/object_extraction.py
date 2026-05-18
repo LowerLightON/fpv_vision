@@ -1,7 +1,7 @@
 from __future__ import annotations
 from fpv_vision.vision.steps.base import BaseStep
 from fpv_vision.vision.entities.frame import Frame
-from vision.entities.detected_object import DetectedObject
+from fpv_vision.vision.entities.detected_object import DetectedObject
 import cv2
 
 class ObjectInfoStep(BaseStep[Frame]):

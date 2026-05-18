@@ -2,7 +2,7 @@ from fpv_vision.vision.steps.base import BaseStep
 from fpv_vision.vision.entities.frame import Frame
 from fpv_vision.vision.tracking.tracker import Tracker
 from fpv_vision.vision.tracking.tracked_object import TrackedObject
-from vision.entities.detected_object import DetectedObject
+from fpv_vision.vision.entities.detected_object import DetectedObject
 
 
 class ObjectTracking(BaseStep[Frame]):

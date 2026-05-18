@@ -1,4 +1,4 @@
-from vision.entities.detected_object import DetectedObject
+from fpv_vision.vision.entities.detected_object import DetectedObject
 class TrackedObject:
     def __init__(self, obj_id: int, detection: DetectedObject, timestamp: float, min_dt: float):
         self._obj_id = obj_id
