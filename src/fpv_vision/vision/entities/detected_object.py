@@ -37,17 +37,17 @@ class DetectedObject:
         return self.bounding_box[3]
 
     @property
-    def v_x(self) -> float:
+    def v_x(self) -> float | None:
         return self.velocity[0] if self.velocity else None
 
     @property
-    def v_y(self) -> float:
+    def v_y(self) -> float | None:
         return self.velocity[1] if self.velocity else None
 
     @property
-    def s_x(self) -> int:
+    def s_x(self) -> int | None:
         return self.smoothed_center[0] if self.smoothed_center else None
 
     @property
-    def s_y(self) -> int:
+    def s_y(self) -> int | None:
         return self.smoothed_center[1] if self.smoothed_center else None

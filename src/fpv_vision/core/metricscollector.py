@@ -4,9 +4,9 @@ class MetricsCollector:
         self.step_timings: dict[str, deque[float]] = {}
         self.frame_latencies: deque[float] = deque(maxlen=history_size)
 
-    def record_step (self, name_step: str, duration_ms: float)->None:
+    def record_step (self, name_step: str, duration_ms: float, history_size: int)->None:
         if name_step not in self.step_timings:
-            self.step_timings[name_step] = deque(maxlen=120)
+            self.step_timings[name_step] = deque(maxlen=history_size)
         self.step_timings[name_step].append(duration_ms) 
 
     def record_frame (self, total_latency_ms: float)->None:
@@ -19,6 +19,10 @@ class MetricsCollector:
         else:
             frame_last = self.frame_latencies[-1]
             frame_avg = sum(self.frame_latencies) / len(self.frame_latencies)
+        if frame_last > 0:
+            frame_fps = 1000.0 / frame_last
+        else:
+            frame_fps = 0.0
 
         step_snapshot = {}
 
@@ -36,5 +40,6 @@ class MetricsCollector:
                 "last" : frame_last,
                 "avg" : frame_avg
             },
+            "fps" : frame_fps,
             "steps" : step_snapshot
         }
