@@ -33,4 +33,25 @@ class TelemetryOverlayStep(BaseStep[Frame]):
             2,
         )
 
+        steps = snapshot["steps"]
+        y_offset = 90
+    
+        slowest_steps = sorted(
+            steps.items(),
+            key=lambda item: item[1]["last"],
+            reverse=True
+        )[:3]
+        for step_name, data in slowest_steps:
+            step_latency = data["last"]
+            cv2.putText(
+                frame.image,
+                f"{step_name}: {step_latency:.2f} ms",
+                (10, y_offset),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.7,
+                (0, 255, 0),
+                2,
+            )
+            y_offset += 25
+
         return frame
