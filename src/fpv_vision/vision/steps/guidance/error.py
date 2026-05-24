@@ -6,14 +6,14 @@ class ErrorStep(BaseStep):
         height, width = frame.image.shape[:2]
         frame.frame_center = (width // 2, height // 2)
 
-        if frame.primary_object is None:
-            frame.error = None
+        if frame.selected_target is None:
+            frame.target_offset = None
             return frame
         if frame.frame_center is None:
-            frame.error = None
+            frame.target_offset = None
             return frame
-        target_x, target_y = frame.primary_object.current_center
-        error_x = target_x -  frame.f_x
-        error_y = target_y -  frame.f_y
-        frame.error = (error_x, error_y)
+        target_x, target_y = frame.selected_target.center
+        offset_x = target_x -  frame.frame_center[0]
+        offset_y = target_y -  frame.frame_center[1]
+        frame.target_offset = (offset_x, offset_y)
         return frame

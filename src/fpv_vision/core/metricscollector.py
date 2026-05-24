@@ -1,8 +1,8 @@
 from collections import deque
 class MetricsCollector:
-    def __init__(self):
+    def __init__(self, history_size: int):
         self.step_timings: dict[str, deque[float]] = {}
-        self.frame_latencies: deque[float] = deque(maxlen=120)
+        self.frame_latencies: deque[float] = deque(maxlen=history_size)
 
     def record_step (self, name_step: str, duration_ms: float)->None:
         if name_step not in self.step_timings:

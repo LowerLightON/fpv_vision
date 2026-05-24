@@ -10,11 +10,12 @@ from fpv_vision.vision.steps.utility.time import TimeStep
 from fpv_vision.vision.steps.detection.object_extraction import ObjectInfoStep
 from fpv_vision.vision.steps.selection.selectprimaryobject import SelectPrimaryObject
 from fpv_vision.vision.steps.tracking.objecttracking import ObjectTracking
+from fpv_vision.core.metricscollector import MetricsCollector
 from fpv_vision import config as cfg
 
 
 def build_pipeline()->Pipeline:
-    return Pipeline([
+    return Pipeline(metrics_collector=MetricsCollector(cfg.HISTORY_SIZE), steps=[
         TimeStep(),
         Resize(cfg.CAP["WIDTH"], cfg.CAP["HEIGHT"]),
         ROIStep(),

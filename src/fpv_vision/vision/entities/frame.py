@@ -21,9 +21,9 @@ class Frame:
         return self.debug_data.get(key, default)
 
     @property
-    def frame_center_x(self) -> int:
+    def frame_center_x(self) -> int | None:
         return self.frame_center[0] if self.frame_center else None
 
     @property
-    def frame_center_y(self) -> int:
+    def frame_center_y(self) -> int | None:
         return self.frame_center[1] if self.frame_center else None
