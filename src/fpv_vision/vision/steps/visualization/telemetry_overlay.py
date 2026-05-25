@@ -12,6 +12,9 @@ class TelemetryOverlayStep(BaseStep[Frame]):
 
         latency = snapshot["frame_latency"]["last"]
         frame_fps = snapshot["fps"]
+        is_spike = snapshot["spike"]
+
+        color = (0, 0, 255) if is_spike else (0, 255, 0)
 
         cv2.putText(
             frame.image,
@@ -19,7 +22,7 @@ class TelemetryOverlayStep(BaseStep[Frame]):
             (10, 30),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.7,
-            (0, 255, 0),
+            color,
             2,
         )
 
@@ -29,7 +32,7 @@ class TelemetryOverlayStep(BaseStep[Frame]):
             (10, 60),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.7,
-            (0, 255, 0),
+            color,
             2,
         )
 
@@ -49,7 +52,7 @@ class TelemetryOverlayStep(BaseStep[Frame]):
                 (10, y_offset),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.7,
-                (0, 255, 0),
+                color,
                 2,
             )
             y_offset += 25

@@ -1,15 +1,16 @@
 from fpv_vision.vision.entities.detected_object import DetectedObject
+from fpv_vision.vision.tracking.tracked_object import TrackedObject
 from typing import Any
 
 class Frame:
-    def __init__(self, image):
+    def __init__(self, image, timestamp: float) -> None:
         self.image = image
-
-        self.timestamp: float | None = None
+        self.timestamp: float = timestamp
         self.debug_data: dict[str, Any]  = {}
 
         self.detections: list[DetectedObject] = []
-        self.selected_target: DetectedObject | None = None
+        self.tracked_objects: list[TrackedObject] = []
+        self.selected_target: TrackedObject | None = None
 
         self.frame_center: tuple[int, int] | None = None
         self.target_offset: tuple[int, int] | None = None

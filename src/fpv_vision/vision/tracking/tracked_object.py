@@ -1,7 +1,9 @@
 from fpv_vision.vision.entities.detected_object import DetectedObject
+import math
 class TrackedObject:
     def __init__(self, obj_id: int, detection: DetectedObject, timestamp: float, min_dt: float):
         self._obj_id = obj_id
+        self.state = "new"
         self.current_detection = detection
         self.previous_center = None
         self.current_center = detection.center
@@ -9,6 +11,7 @@ class TrackedObject:
 
         self.velocity = None
         self.predicted_center = None
+        self.angle = None
         self._missed_frames = 0
         self.last_timestamp = timestamp
 
@@ -25,6 +28,7 @@ class TrackedObject:
         self.current_center = detection.center
         self.current_detection = detection
         self._missed_frames = 0
+        self.state = "tracked"
 
         previous_timestamp = self.last_timestamp
         dt = timestamp - previous_timestamp
@@ -42,6 +46,8 @@ class TrackedObject:
             vy = dy / dt
 
             self.velocity = (vx, vy)
+            self.angle = math.degrees(math.atan2(vy, vx))
+            
     def predict(self, dt: float):
         if dt is None or self.velocity is None:
             self.predicted_center = self.current_center
@@ -54,7 +60,19 @@ class TrackedObject:
 
 
     def mark_missed(self):
+        self.state = "lost"
         self._missed_frames += 1
 
     def should_remove(self,  max_missed_frames) -> bool:
         return self.missed_frames > max_missed_frames
+    
+    @property
+    def is_lost(self) -> bool:
+        return self.state == "lost"
+    @property
+    def is_tracked(self) -> bool:
+        return self.state == "tracked"
+    @property
+    def is_new(self) -> bool:
+        return self.state == "new"
+    

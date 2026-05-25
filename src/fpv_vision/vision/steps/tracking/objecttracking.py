@@ -10,9 +10,9 @@ class ObjectTracking(BaseStep[Frame]):
         self.tracker = Tracker(max_distance, max_missed_frames, min_dt)
 
     def apply(self, frame: Frame) -> Frame:
-        detections: list[DetectedObject] = frame.objects
+        detections: list[DetectedObject] = frame.detections
         timestamp = frame.timestamp
 
-        objects: list[TrackedObject] = self.tracker.update(detections, timestamp)
-        frame.objects = objects
+        tracked_objects: list[TrackedObject] = self.tracker.update(detections, timestamp)
+        frame.tracked_objects = tracked_objects
         return frame

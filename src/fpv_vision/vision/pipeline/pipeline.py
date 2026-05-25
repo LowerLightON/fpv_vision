@@ -22,7 +22,7 @@ class Pipeline(Generic[T]):
             current = step(current)
             end = time.perf_counter()
             duration_ms = (end - start) * 1000
-            self.metrics_collector.record_step(step.name, duration_ms, cfg.HISTORY_SIZE)
+            self.metrics_collector.record_step(step.name, duration_ms)
         pipeline_end = time.perf_counter()
         pipeline_duration_ms = (pipeline_end - pipeline_start) * 1000
         self.metrics_collector.record_frame(pipeline_duration_ms)

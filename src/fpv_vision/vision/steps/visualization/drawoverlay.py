@@ -4,7 +4,7 @@ import cv2
 
 class DrawOverlayStep(BaseStep):
     def apply(self, frame: Frame) -> Frame:
-        obj = frame.primary_object
+        obj = frame.selected_target
         if obj is None:
             if frame.frame_center is not None:
                 cv2.circle(frame.image, frame.frame_center, 5, (255, 0, 0), -1)

@@ -1,6 +1,7 @@
 import cv2
 from fpv_vision import config as cfg
 from fpv_vision.vision.entities.frame import Frame
+import time
 CAP = cfg.CAP
 
 class Camera:
@@ -29,7 +30,8 @@ class Camera:
         ret, img = self._cap.read()
         if not ret:
             raise RuntimeError("Could not read frame")
-        return Frame(img)
+        timestamp = time.perf_counter()
+        return Frame(img, timestamp)
 
     def close(self):
         if self._cap is not None:

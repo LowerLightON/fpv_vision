@@ -8,7 +8,7 @@ from fpv_vision.vision.steps.guidance.error import ErrorStep
 from fpv_vision.vision.steps.visualization.drawoverlay import DrawOverlayStep
 from fpv_vision.vision.steps.utility.time import TimeStep
 from fpv_vision.vision.steps.detection.object_extraction import ObjectInfoStep
-from fpv_vision.vision.steps.selection.selectprimaryobject import SelectPrimaryObject
+from fpv_vision.vision.steps.selection.selecttarget import SelectTarget
 from fpv_vision.vision.steps.tracking.objecttracking import ObjectTracking
 from fpv_vision.vision.steps.visualization.telemetry_overlay import TelemetryOverlayStep
 from fpv_vision.core.metricscollector import MetricsCollector
@@ -28,7 +28,7 @@ def build_pipeline()->Pipeline:
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
         ObjectInfoStep(),
         ObjectTracking(cfg.MAX_DISTANCE, cfg.MAX_MISSED_FRAMES, cfg.MIN_DT),
-        SelectPrimaryObject(),
+        SelectTarget(),
         ErrorStep(),
         DrawOverlayStep(),
         TelemetryOverlayStep(metrics)
