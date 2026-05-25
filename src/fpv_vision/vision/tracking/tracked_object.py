@@ -9,9 +9,9 @@ class TrackedObject:
         self.current_center = detection.center
         self.min_dt = min_dt
 
-        self.velocity = None
-        self.predicted_center = None
-        self.angle = None
+        self.velocity: tuple[float, float] | None = None
+        self.predicted_center: tuple[float, float] | None = None
+        self.angle: float | None = None
         self._missed_frames = 0
         self.last_timestamp = timestamp
 
@@ -23,7 +23,7 @@ class TrackedObject:
     def missed_frames(self) -> int:
         return self._missed_frames
 
-    def update(self, detection, timestamp):
+    def update(self, detection: DetectedObject, timestamp: float):
         self.previous_center = self.current_center
         self.current_center = detection.center
         self.current_detection = detection
@@ -48,8 +48,8 @@ class TrackedObject:
             self.velocity = (vx, vy)
             self.angle = math.degrees(math.atan2(vy, vx))
             
-    def predict(self, dt: float):
-        if dt is None or self.velocity is None:
+    def predict(self, dt: float)-> tuple[float, float]:
+        if  self.velocity is None:
             self.predicted_center = self.current_center
             return self.predicted_center
 

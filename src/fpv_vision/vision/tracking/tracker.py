@@ -12,7 +12,6 @@ class Tracker:
 		self.min_dt = min_dt
 
 	def update (self, detections: list[DetectedObject], timestamp: float) -> list[TrackedObject]:
-		matched_track_ids = set()
 		matched_detection_indices = set()
 		current_tracks: list[TrackedObject] = []
 
@@ -21,10 +20,16 @@ class Tracker:
 			best_detection = None
 			best_detection_index = None
 
+			dt = timestamp - track.last_timestamp
+			track.predict(dt)
+
 			for detection_index, detection in enumerate(detections):
 				if detection_index in matched_detection_indices:
 					continue
-				distance = calc_distance(detection.center, track.current_center)
+				if track.predicted_center is not None:
+					distance = calc_distance(detection.center, track.predicted_center)
+				else:
+					distance = calc_distance(detection.center, track.current_center)
 				if distance < best_distance:
 					best_distance = distance
 					best_detection = detection
@@ -32,7 +37,6 @@ class Tracker:
 
 			if best_detection is not None and best_detection_index is not None:
 				track.update(best_detection, timestamp)
-				matched_track_ids.add(track.obj_id)
 				matched_detection_indices.add(best_detection_index)
 				current_tracks.append(track)
 			else:
