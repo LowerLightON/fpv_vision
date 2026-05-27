@@ -8,6 +8,7 @@ class TrackedObject:
         self.previous_center = None
         self.current_center = detection.center
         self.min_dt = min_dt
+        self.hits = 1
 
         self.velocity: tuple[float, float] | None = None
         self.predicted_center: tuple[float, float] | None = None
@@ -28,7 +29,10 @@ class TrackedObject:
         self.current_center = detection.center
         self.current_detection = detection
         self._missed_frames = 0
-        self.state = "tracked"
+
+        self.hits += 1
+        if self.hits >= 3:
+            self.state = "tracked"
 
         previous_timestamp = self.last_timestamp
         dt = timestamp - previous_timestamp

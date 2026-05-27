@@ -14,11 +14,9 @@ class Tracker:
 	def update (self, detections: list[DetectedObject], timestamp: float) -> list[TrackedObject]:
 		matched_detection_indices = set()
 		current_tracks: list[TrackedObject] = []
+		candidates: list[tuple[float, TrackedObject, DetectedObject, int]] = []
 
 		for track in self.tracks:
-			best_distance = self.max_distance
-			best_detection = None
-			best_detection_index = None
 
 			dt = timestamp - track.last_timestamp
 			track.predict(dt)
@@ -26,20 +24,29 @@ class Tracker:
 			for detection_index, detection in enumerate(detections):
 				if detection_index in matched_detection_indices:
 					continue
-				if track.predicted_center is not None:
-					distance = calc_distance(detection.center, track.predicted_center)
-				else:
-					distance = calc_distance(detection.center, track.current_center)
-				if distance < best_distance:
-					best_distance = distance
-					best_detection = detection
-					best_detection_index = detection_index
 
-			if best_detection is not None and best_detection_index is not None:
-				track.update(best_detection, timestamp)
-				matched_detection_indices.add(best_detection_index)
-				current_tracks.append(track)
+				matching_center = self._get_matching_center(track)
+				distance = calc_distance(matching_center, detection.center)
+
+				if distance < self.max_distance:
+					candidates.append((distance, track, detection, detection_index))
+				
+		candidates.sort(key=lambda item: item[0])
+
+		matched_tracks = set()
+		matched_detection_indices = set()
+
+		for distance, track, detection, detection_index in candidates:
+			if track.obj_id in matched_tracks or detection_index in matched_detection_indices:
+				continue
 			else:
+				track.update(detection, timestamp)
+				matched_tracks.add(track.obj_id)
+				matched_detection_indices.add(detection_index)
+				current_tracks.append(track)
+		
+		for track in self.tracks:
+			if track.obj_id not in matched_tracks:
 				track.mark_missed()
 
 		for detection_index, detection in enumerate(detections):
@@ -57,5 +64,10 @@ class Tracker:
 				alive_tracks.append(track)
 
 		self.tracks = alive_tracks
-		return current_tracks
-
+		return self.tracks
+	
+	def _get_matching_center(self, track: TrackedObject) -> tuple[float, float]:
+		if track.predicted_center is not None:
+			return track.predicted_center
+		else:
+			return track.current_center
