@@ -1,6 +1,7 @@
 from fpv_vision.vision.entities.detected_object import DetectedObject
 from fpv_vision.vision.tracking.tracked_object import TrackedObject
 from fpv_vision.vision.utils.geometry import distance as calc_distance
+from fpv_vision.vision.utils.geometry import iou as calc_iou
 
 class Tracker:
 	def __init__(self, max_distance: float, max_missed_frames: float, min_dt: float) -> None:
@@ -14,7 +15,7 @@ class Tracker:
 	def update (self, detections: list[DetectedObject], timestamp: float) -> list[TrackedObject]:
 		matched_detection_indices = set()
 		current_tracks: list[TrackedObject] = []
-		candidates: list[tuple[float, TrackedObject, DetectedObject, int]] = []
+		candidates: list[tuple[float,TrackedObject, DetectedObject, int]] = []
 
 		for track in self.tracks:
 
@@ -28,15 +29,18 @@ class Tracker:
 				matching_center = self._get_matching_center(track)
 				distance = calc_distance(matching_center, detection.center)
 
+				iou = calc_iou(track.current_detection.bounding_box, detection.bounding_box)
+				score = distance - iou * 100
+
 				if distance < self.max_distance:
-					candidates.append((distance, track, detection, detection_index))
+					candidates.append((score, track, detection, detection_index))
 				
 		candidates.sort(key=lambda item: item[0])
 
 		matched_tracks = set()
 		matched_detection_indices = set()
 
-		for distance, track, detection, detection_index in candidates:
+		for score, track, detection, detection_index in candidates:
 			if track.obj_id in matched_tracks or detection_index in matched_detection_indices:
 				continue
 			else:

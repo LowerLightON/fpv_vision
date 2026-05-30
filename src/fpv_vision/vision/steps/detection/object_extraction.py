@@ -28,7 +28,7 @@ class ObjectInfoStep(BaseStep[Frame]):
             )
 
             objects.append(obj)
-        frame.objects = objects
+        frame.detections = objects
         return frame
 
 

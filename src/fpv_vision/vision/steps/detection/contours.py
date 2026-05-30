@@ -10,6 +10,7 @@ class ContoursStep(BaseStep[Frame]):
     def apply(self, frame : Frame) ->Frame:
         if len(frame.image.shape) != 2:
             raise ValueError("ContoursStep expects grayscale/binary image")
+        
         contours, _ = cv2.findContours(frame.image, self.retrieval_mode,self.approximation_method)
 
         valid_contours = []
