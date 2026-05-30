@@ -79,4 +79,11 @@ class TrackedObject:
     @property
     def is_new(self) -> bool:
         return self.state == "new"
+    @property
+    def search_radius_factor(self) -> float:
+        if self.state == "new":
+            return 0.8
+        elif self.state == "lost":
+            return 2.0
+        return 1.0
     

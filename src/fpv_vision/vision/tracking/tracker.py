@@ -32,7 +32,9 @@ class Tracker:
 				iou = calc_iou(track.current_detection.bounding_box, detection.bounding_box)
 				score = distance - iou * 100
 
-				if distance < self.max_distance:
+				search_radius = self.max_distance * track.search_radius_factor
+
+				if distance < search_radius:
 					candidates.append((score, track, detection, detection_index))
 				
 		candidates.sort(key=lambda item: item[0])
