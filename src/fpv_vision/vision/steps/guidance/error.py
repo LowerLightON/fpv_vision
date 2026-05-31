@@ -12,7 +12,7 @@ class ErrorStep(BaseStep):
         if frame.frame_center is None:
             frame.target_offset = None
             return frame
-        target_x, target_y = frame.selected_target.center
+        target_x, target_y = frame.selected_target.current_center
         offset_x = target_x -  frame.frame_center[0]
         offset_y = target_y -  frame.frame_center[1]
         frame.target_offset = (offset_x, offset_y)

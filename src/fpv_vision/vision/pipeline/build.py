@@ -19,7 +19,7 @@ metrics = MetricsCollector(cfg.HISTORY_SIZE)
 def build_pipeline()->Pipeline:
     return Pipeline(metrics_collector=metrics, steps=[
         TimeStep(),
-        Resize(cfg.CAP["WIDTH"], cfg.CAP["HEIGHT"]),
+        Resize(cfg.CAM["WIDTH"], cfg.CAM["HEIGHT"]),
         ROIStep(),
         HSVMaskStep(cfg.HSV_MASK["LOWER"], cfg.HSV_MASK["UPPER"]),
         Morphology(cfg.MORPH_PARAMS["KERNEL_SIZE"], cfg.MORPH_PARAMS["OPERATION"]),

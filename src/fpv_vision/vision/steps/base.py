@@ -8,6 +8,7 @@ class BaseStep(Generic[T],ABC):
     @property
     def name(self)-> str:
         return self.__class__.__name__
+    
     def __call__(self, frame: T) -> T:
         return self.apply(frame)
 

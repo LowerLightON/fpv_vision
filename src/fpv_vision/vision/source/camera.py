@@ -2,7 +2,7 @@ import cv2
 from fpv_vision import config as cfg
 from fpv_vision.vision.entities.frame import Frame
 import time
-CAP = cfg.CAP
+CAP = cfg.CAM
 
 class Camera:
     def __init__(self, device=CAP["DEVICE"], width=CAP["WIDTH"], height=CAP["HEIGHT"], fps=CAP["FPS"]):
@@ -24,6 +24,7 @@ class Camera:
         cap.set(cv2.CAP_PROP_FPS, self.fps)
 
         self._cap = cap
+
     def read(self):
         if self._cap is None:
             raise RuntimeError("Could not open camera")

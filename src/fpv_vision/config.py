@@ -4,12 +4,18 @@ import cv2
 WIN_INT_CAMERA = 'Integrated Camera'
 
 #Параметры камеры
-CAP = {
+CAM = {
     "DEVICE": "/dev/video0",
     "WIDTH": 1280,
     "HEIGHT": 720,
     "FPS": 30,
 }
+
+#Параметры видеофайла
+VIDEO_FILE = {
+    "PATH": "data/videos/test_1.mp4",
+}
+
 #Размытие blur
 blur = {
     "KERNEL_SIZE": (5, 5),
