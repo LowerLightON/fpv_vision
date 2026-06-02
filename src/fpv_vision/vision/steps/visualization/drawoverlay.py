@@ -5,6 +5,7 @@ import cv2
 
 class DrawOverlayStep(BaseStep):
     def apply(self, frame: Frame) -> Frame:
+        frame.image = frame.original_image.copy()
         obj = frame.selected_target
 
         if obj is None:

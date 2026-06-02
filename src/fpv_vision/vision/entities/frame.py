@@ -4,6 +4,7 @@ from typing import Any
 
 class Frame:
     def __init__(self, image, timestamp: float) -> None:
+        self.original_image = image.copy()
         self.image = image
         self.timestamp: float = timestamp
         self.debug_data: dict[str, Any]  = {}

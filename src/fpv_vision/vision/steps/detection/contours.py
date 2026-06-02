@@ -20,5 +20,4 @@ class ContoursStep(BaseStep[Frame]):
                 valid_contours.append(contour)
 
         frame.set_debug("contours", valid_contours)
-        frame.image = cv2.cvtColor(frame.image, cv2.COLOR_GRAY2BGR)
         return frame
