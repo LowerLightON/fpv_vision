@@ -16,20 +16,49 @@ from fpv_vision import config as cfg
 
 metrics = MetricsCollector(cfg.HISTORY_SIZE)
 
-def build_pipeline()->Pipeline:
-    return Pipeline(metrics_collector=metrics, steps=[
+
+def build_preprocessing_steps():
+    return [
         TimeStep(),
         Resize(cfg.CAM["WIDTH"], cfg.CAM["HEIGHT"]),
         ROIStep(),
+    ]
+
+
+def build_hsv_detection_steps():
+    return [
         HSVMaskStep(cfg.HSV_MASK["LOWER"], cfg.HSV_MASK["UPPER"]),
         Morphology(cfg.MORPH_PARAMS["KERNEL_SIZE"], cfg.MORPH_PARAMS["OPERATION"]),
-        ContoursStep(cfg.FIND_CONTOUR_PARAMS["MIN_AREA"],
-                     cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
-                     cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
+        ContoursStep(
+            cfg.FIND_CONTOUR_PARAMS["MIN_AREA"],
+            cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
+            cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"],
+        ),
         ContoursToDetectionsStep(),
+    ]
+
+
+def build_tracking_steps():
+    return [
         ObjectTracking(cfg.MAX_DISTANCE, cfg.MAX_MISSED_FRAMES, cfg.MIN_DT),
-        SelectTarget(),
-        ErrorStep(),
+    ]
+
+
+def build_visualization_steps():
+    return [
         DrawOverlayStep(),
-        TelemetryOverlayStep(metrics)
-    ])
+        TelemetryOverlayStep(metrics),
+    ]
+
+def build_pipeline() -> Pipeline:
+    return Pipeline(
+        metrics_collector=metrics,
+        steps=[
+            *build_preprocessing_steps(),
+            *build_hsv_detection_steps(),
+            *build_tracking_steps(),
+            SelectTarget(),
+            ErrorStep(),
+            *build_visualization_steps(),
+        ],
+    )

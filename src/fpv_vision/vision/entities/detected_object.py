@@ -3,12 +3,12 @@ from typing import Any
 
 class DetectedObject:
     def __init__(self,
-                 contour: Any,
                  bounding_box: tuple[ int, int, int, int],
                  center: tuple[int,int],
                  area: float,
+                 contour: Any | None = None
                  ) -> None:
-        self.contour = contour
+        self.contour = contour 
         self.bounding_box = bounding_box
         self.center = center
         self.area = area
