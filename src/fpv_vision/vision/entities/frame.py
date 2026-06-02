@@ -19,7 +19,7 @@ class Frame:
     def set_debug(self, key: str , value: object) -> None:
         self.debug_data[key] = value
 
-    def get_debug(self, key: str , default):
+    def get_debug(self, key: str, default: Any = None):
         return self.debug_data.get(key, default)
 
     @property

@@ -16,24 +16,6 @@ VIDEO_FILE = {
     "PATH": "data/videos/test_1.mp4",
 }
 
-#Размытие blur
-blur = {
-    "KERNEL_SIZE": (5, 5),
-    "SIGMA": 5
-}
-
-#Пороговая обработка
-threshold = {
-    "THRESHOLD" : 120,
-    "MAX_VALUE" : 255,
-    "TYPE" : cv2.THRESH_BINARY
-}
-
-#Конвертация в другие цвета
-CVTCOLOR = {
-    "COLOR": cv2.COLOR_BGR2GRAY,
-}
-
 #Morphology
 MORPH_PARAMS = {
     "KERNEL_SIZE": 3,
@@ -53,15 +35,6 @@ HSV_MASK = {
     "UPPER": (95, 255, 255)
 }
 
-#Velocity
-ALPHA_VELOCITY = 0.8
-
-#Prediction
-PREDICTED_TIME = 0.1
-
-#Low-pass-filter(Smooth center)
-ALPHA_SMOOTH = 0.8
-
 #TrackingObject
 MAX_DISTANCE = 30
 MAX_MISSED_FRAMES = 5
@@ -69,3 +42,6 @@ MIN_DT = 1
 
 #MetricCollector
 HISTORY_SIZE = 120
+
+#Tracker
+IOU_WEIGHT = 100

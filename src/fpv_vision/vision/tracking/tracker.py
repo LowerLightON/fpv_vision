@@ -4,17 +4,17 @@ from fpv_vision.vision.utils.geometry import distance as calc_distance
 from fpv_vision.vision.utils.geometry import iou as calc_iou
 
 class Tracker:
-	def __init__(self, max_distance: float, max_missed_frames: float, min_dt: float) -> None:
+	def __init__(self, max_distance: float, max_missed_frames: float, min_dt: float, iou_weight: float) -> None:
 		self.tracks: list[TrackedObject] = []
 
 		self.max_distance = max_distance
 		self.max_missed_frames = max_missed_frames
 		self.next_id = 1
 		self.min_dt = min_dt
+		self.iou_weight = iou_weight
 
 	def update (self, detections: list[DetectedObject], timestamp: float) -> list[TrackedObject]:
 		matched_detection_indices = set()
-		current_tracks: list[TrackedObject] = []
 		candidates: list[tuple[float,TrackedObject, DetectedObject, int]] = []
 
 		for track in self.tracks:
@@ -30,7 +30,7 @@ class Tracker:
 				distance = calc_distance(matching_center, detection.center)
 
 				iou = calc_iou(track.current_detection.bounding_box, detection.bounding_box)
-				score = distance - iou * 100
+				score = distance - iou * self.iou_weight
 
 				search_radius = self.max_distance * track.search_radius_factor
 
@@ -49,7 +49,6 @@ class Tracker:
 				track.update(detection, timestamp)
 				matched_tracks.add(track.obj_id)
 				matched_detection_indices.add(detection_index)
-				current_tracks.append(track)
 		
 		for track in self.tracks:
 			if track.obj_id not in matched_tracks:
@@ -60,7 +59,6 @@ class Tracker:
 				continue
 			new_track = TrackedObject(self.next_id, detection, timestamp, self.min_dt)
 			self.next_id += 1
-			current_tracks.append(new_track)
 			self.tracks.append(new_track)
 
 		alive_tracks: list[TrackedObject] = []
