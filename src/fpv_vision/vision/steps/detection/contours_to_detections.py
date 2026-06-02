@@ -4,7 +4,7 @@ from fpv_vision.vision.entities.frame import Frame
 from fpv_vision.vision.entities.detected_object import DetectedObject
 import cv2
 
-class ObjectExtractionStep(BaseStep[Frame]):
+class ContoursToDetectionsStep(BaseStep[Frame]):
     def apply(self, frame: Frame) -> Frame:
         contours = frame.get_debug("contours", [])
         objects: list[DetectedObject] = []

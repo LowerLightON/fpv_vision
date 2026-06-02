@@ -7,7 +7,7 @@ from fpv_vision.vision.steps.preprocessing.roi import ROIStep
 from fpv_vision.vision.steps.guidance.error import ErrorStep
 from fpv_vision.vision.steps.visualization.drawoverlay import DrawOverlayStep
 from fpv_vision.vision.steps.utility.time import TimeStep
-from fpv_vision.vision.steps.detection.object_extraction import ObjectExtractionStep
+from fpv_vision.vision.steps.detection.contours_to_detections import ContoursToDetectionsStep
 from fpv_vision.vision.steps.selection.selecttarget import SelectTarget
 from fpv_vision.vision.steps.tracking.objecttracking import ObjectTracking
 from fpv_vision.vision.steps.visualization.telemetry_overlay import TelemetryOverlayStep
@@ -26,7 +26,7 @@ def build_pipeline()->Pipeline:
         ContoursStep(cfg.FIND_CONTOUR_PARAMS["MIN_AREA"],
                      cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
                      cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]),
-        ObjectExtractionStep(),
+        ContoursToDetectionsStep(),
         ObjectTracking(cfg.MAX_DISTANCE, cfg.MAX_MISSED_FRAMES, cfg.MIN_DT),
         SelectTarget(),
         ErrorStep(),
