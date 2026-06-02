@@ -13,10 +13,9 @@ def main():
             frame = source.read()
             if frame is None:
                 break
-            cv2.imshow("original", frame.image)
+            #cv2.imshow("original", frame.image)
             frame = pipeline(frame)
-            cv2.imshow(cfg.WIN_INT_CAMERA, frame.image)
-            cv2.imshow("mask and draw", frame.image)
+            cv2.imshow("processed", frame.image)
 
             bitwise_image = frame.get_debug("bitwise_image", None)
             if bitwise_image is not None:
