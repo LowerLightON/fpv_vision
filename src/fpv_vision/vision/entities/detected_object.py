@@ -6,12 +6,19 @@ class DetectedObject:
                  bounding_box: tuple[ int, int, int, int],
                  center: tuple[int,int],
                  area: float,
-                 contour: Any | None = None
+                 contour: Any | None = None,
+                 confidence: float | None = None,
+                 class_id: int | None = None,
+                 label: str | None = None
                  ) -> None:
         self.contour = contour 
         self.bounding_box = bounding_box
         self.center = center
         self.area = area
+        self.confidence = confidence
+        self.class_id = class_id    
+        self.label = label
+        
 
     @property
     def x(self) -> int:
