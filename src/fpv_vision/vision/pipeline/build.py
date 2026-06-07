@@ -10,6 +10,7 @@ from fpv_vision.vision.steps.visualization.telemetry_overlay import TelemetryOve
 from fpv_vision.core.metricscollector import MetricsCollector
 from fpv_vision.vision.steps.detection.objectdetection import ObjectDetection
 from fpv_vision.vision.detection.hsv_detector import HSVDetector
+from fpv_vision.vision.detection.yolo_detector import YoloDetector
 from fpv_vision import config as cfg
 
 metrics = MetricsCollector(cfg.HISTORY_SIZE)
@@ -19,7 +20,7 @@ def build_preprocessing_steps():
     return [
         TimeStep(),
         Resize(cfg.CAM["WIDTH"], cfg.CAM["HEIGHT"]),
-        ROIStep(),
+        #ROIStep(),
     ]
 
 def build_hsv_detection_steps():
@@ -32,6 +33,16 @@ def build_hsv_detection_steps():
             min_area=cfg.FIND_CONTOUR_PARAMS["MIN_AREA"],
             retrieval_mode=cfg.FIND_CONTOUR_PARAMS["RETRIEVAL"],
             approximation_method=cfg.FIND_CONTOUR_PARAMS["APPROXIMATION"]
+        ))
+    ]
+
+def build_yolo_detection_steps():
+    return [
+        ObjectDetection(YoloDetector(
+            model_path=cfg.YOLO["MODEL_PATH"],
+            confidence_threshold=cfg.YOLO["CONFIDENCE"],
+            input_size=cfg.YOLO["INPUT_SIZE"],
+            allowed_class_ids=cfg.YOLO["ALLOWED_CLASS_IDS"]
         ))
     ]
 
@@ -52,7 +63,7 @@ def build_pipeline() -> Pipeline:
         metrics_collector=metrics,
         steps=[
             *build_preprocessing_steps(),
-            *build_hsv_detection_steps(),
+            *build_yolo_detection_steps(),
             *build_tracking_steps(),
             SelectTarget(),
             ErrorStep(),

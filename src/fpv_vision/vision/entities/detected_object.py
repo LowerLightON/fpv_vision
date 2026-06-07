@@ -11,10 +11,13 @@ class DetectedObject:
                  class_id: int | None = None,
                  label: str | None = None
                  ) -> None:
-        self.contour = contour 
+        
         self.bounding_box = bounding_box
         self.center = center
         self.area = area
+
+        self.contour = contour 
+        
         self.confidence = confidence
         self.class_id = class_id    
         self.label = label

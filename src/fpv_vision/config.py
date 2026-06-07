@@ -45,3 +45,11 @@ HISTORY_SIZE = 120
 
 #Tracker
 IOU_WEIGHT = 100
+
+#Yolo
+YOLO = {
+    "MODEL_PATH": "yolo11n.onnx",
+    "CONFIDENCE": 0.25,
+    "INPUT_SIZE": 640,
+    "ALLOWED_CLASS_IDS": {2, 3, 5, 7}
+}
