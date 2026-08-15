@@ -1,7 +1,10 @@
-from fpv_vision.vision.source.base_source_frame import FrameSource
-from fpv_vision.vision.entities.frame import Frame
-import cv2
 import time
+
+import cv2
+
+from fpv_vision.vision.entities.frame import Frame
+from fpv_vision.vision.source.base_source_frame import FrameSource
+
 
 class VideoFileSource(FrameSource):
     def __init__(self, video_path: str) -> None:

@@ -1,6 +1,8 @@
+from typing import Any
+
 from fpv_vision.vision.entities.detected_object import DetectedObject
 from fpv_vision.vision.tracking.tracked_object import TrackedObject
-from typing import Any
+
 
 class Frame:
     def __init__(self, image, timestamp: float) -> None:

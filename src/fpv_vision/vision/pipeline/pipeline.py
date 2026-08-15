@@ -1,7 +1,7 @@
-from typing import TypeVar, Generic
 import time
+from typing import Generic, TypeVar
+
 from fpv_vision.core.metricscollector import MetricsCollector
-from fpv_vision import config as cfg
 from fpv_vision.vision.steps.base import BaseStep
 
 T = TypeVar('T')

@@ -1,7 +1,9 @@
 import cv2
+
 from fpv_vision import config as cfg
-from fpv_vision.vision.source.video_file_source import VideoFileSource
 from fpv_vision.vision.pipeline.build import build_pipeline
+from fpv_vision.vision.source.video_file_source import VideoFileSource
+
 
 def main():
     source = VideoFileSource(cfg.VIDEO_FILE["PATH"])

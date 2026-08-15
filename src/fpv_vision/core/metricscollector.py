@@ -1,4 +1,6 @@
 from collections import deque
+
+
 class MetricsCollector:
     def __init__(self, history_size: int):
         self.step_timings: dict[str, deque[float]] = {}

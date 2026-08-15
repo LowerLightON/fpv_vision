@@ -1,17 +1,16 @@
-from fpv_vision.vision.steps.preprocessing.resize import Resize
-from fpv_vision.vision.pipeline.pipeline import Pipeline
-from fpv_vision.vision.steps.preprocessing.roi import ROIStep
-from fpv_vision.vision.steps.guidance.error import ErrorStep
-from fpv_vision.vision.steps.visualization.drawoverlay import DrawOverlayStep
-from fpv_vision.vision.steps.utility.time import TimeStep
-from fpv_vision.vision.steps.selection.selecttarget import SelectTarget
-from fpv_vision.vision.steps.tracking.objecttracking import ObjectTracking
-from fpv_vision.vision.steps.visualization.telemetry_overlay import TelemetryOverlayStep
+from fpv_vision import config as cfg
 from fpv_vision.core.metricscollector import MetricsCollector
-from fpv_vision.vision.steps.detection.objectdetection import ObjectDetection
 from fpv_vision.vision.detection.hsv_detector import HSVDetector
 from fpv_vision.vision.detection.yolo_detector import YoloDetector
-from fpv_vision import config as cfg
+from fpv_vision.vision.pipeline.pipeline import Pipeline
+from fpv_vision.vision.steps.detection.objectdetection import ObjectDetection
+from fpv_vision.vision.steps.guidance.error import ErrorStep
+from fpv_vision.vision.steps.preprocessing.resize import Resize
+from fpv_vision.vision.steps.selection.selecttarget import SelectTarget
+from fpv_vision.vision.steps.tracking.objecttracking import ObjectTracking
+from fpv_vision.vision.steps.utility.time import TimeStep
+from fpv_vision.vision.steps.visualization.drawoverlay import DrawOverlayStep
+from fpv_vision.vision.steps.visualization.telemetry_overlay import TelemetryOverlayStep
 
 metrics = MetricsCollector(cfg.HISTORY_SIZE)
 
